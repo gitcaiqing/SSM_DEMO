@@ -34,7 +34,7 @@
 	</mvc:annotation-driven>
 	
 	<!-- 静态资源 -->
-	<!-- <mvc:resources mapping="/static/**" location="/static/" /> -->
+	<mvc:resources mapping="/static/**" location="/static/" />
 	
 	<!-- 试图解析后台 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
