@@ -25,9 +25,10 @@ public class BasicUserServiceTest {
 	public void testInsert() {
 		BasicUser basicUser = new BasicUser();
 		basicUser.setId(1);
-		basicUser.setUtype(1);
+		basicUser.setUtype(2);
 		basicUser.setUserid(UuidUtil.getUuid());
 		basicUser.setUsername("墨倾池");
+		basicUser.setRealname("墨倾池");
 		basicUser.setPassword(EncryptKit.MD5("123456"));
 		basicUser.setAge(18);
 		int result = basicUserService.insert(basicUser);

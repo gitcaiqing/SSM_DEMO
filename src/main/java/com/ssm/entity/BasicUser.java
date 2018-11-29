@@ -1,9 +1,13 @@
 package com.ssm.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BasicUser {
-    /**
+public class BasicUser implements Serializable{
+
+	private static final long serialVersionUID = 3812792947518747375L;
+
+	/**
      * 主键自增
      */
     private Integer id;

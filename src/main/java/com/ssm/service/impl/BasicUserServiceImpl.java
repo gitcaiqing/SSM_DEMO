@@ -22,7 +22,7 @@ public class BasicUserServiceImpl implements BasicUserService{
 	 * 插入用户
 	 */
 	public Integer insert(BasicUser basicUser) {
-		return basicUserMapper.insert(basicUser);
+		return basicUserMapper.insertSelective(basicUser);
 	}
 
 	/**

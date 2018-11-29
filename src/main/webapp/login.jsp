@@ -1,7 +1,16 @@
+<%@page import="org.apache.shiro.SecurityUtils"%>
+<%@page import="org.apache.shiro.subject.Subject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ include file="/WEB-INF/common/taglib.jsp"%>
+<%
+	//如果登陆成功，则直接跳转到主页
+	Subject subject = SecurityUtils.getSubject();
+	if(subject.isAuthenticated()){
+		response.sendRedirect(request.getContextPath()+"/ssm/home");
+	}
+%>
 <html>
 <head>
 <title>登陆</title>
@@ -31,10 +40,11 @@
 		<div class="container">
 			<div class="sin-w3-agile">
 				<h2>Sign In</h2>
-				<form action="#" method="post">
+				<%-- <form action="${base }/login" method="post"> --%>
+				<form id="form" action="#" method="post">
 					<div class="username">
 						<span class="username">账号:</span>
-						<input type="text" name="name" class="name" placeholder="" required="">
+						<input type="text" name="username" class="name" placeholder="" required="">
 						<div class="clearfix"></div>
 					</div>
 					<div class="password-agileits">
@@ -44,21 +54,33 @@
 					</div>
 					<div class="rem-for-agile">
 						<input type="checkbox" name="remember" class="remember">记住我<br>
-						<a href="#">忘记密码</a><br>
+						<!-- <a href="#">忘记密码</a><br> -->
 					</div>
 					<div class="login-w3">
-						<input type="submit" class="login" value="登陆">
+						<!-- <input type="submit" class="login" value="登陆"> -->
+						<input type="button" class="login" value="登陆" onclick="login()">
 					</div>
 					<div class="clearfix"></div>
 				</form>
 				<div class="back">
-					<a href="index.html">去主人博客</a>
+					<a href="https://blog.csdn.net/caiqing116" target="_blank">去主人博客</a>
 				</div>
 				<div class="footer">
-					<p>&copy; 2018 Design by <a href="https://blog.csdn.net/caiqing116">https://blog.csdn.net/caiqing116</a></p>
+					<p>&copy; 2018 Design by <a href="https://blog.csdn.net/caiqing116" target="_blank">https://blog.csdn.net/caiqing116</a></p>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+function login(){
+	$.post("${base}/ssm/shirologin",$("#form").serialize(),function(data){
+		if(data.resultCode == 0){
+			window.location.href = "${base}/ssm/home";
+		}else{
+			alert(data.msg);
+		}
+	})
+}
+</script>
 </html>
