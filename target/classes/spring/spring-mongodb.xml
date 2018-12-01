@@ -77,6 +77,7 @@
 	<bean id="cookieSerializer" class="org.springframework.session.web.http.DefaultCookieSerializer">
 		<property name="cookieName" value="CUSTOM_JSESSIONID" />
 		<property name="domainNamePattern" value="^.+?\\.(\\w+\\.[a-z]+)$"></property>
+		<!-- 跨域 配置-->
 		<property name="cookiePath" value="/"></property>
 	</bean>
 

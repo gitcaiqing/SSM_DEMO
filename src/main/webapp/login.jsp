@@ -1,3 +1,4 @@
+<%@page import="com.ssm.entity.BasicUser"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="org.apache.shiro.subject.Subject"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -7,9 +8,10 @@
 <%
 	//如果登陆成功，则直接跳转到主页
 	Subject subject = SecurityUtils.getSubject();
-	if(subject.isAuthenticated()){
+	if(subject.isAuthenticated() || subject.isRemembered()){
 		response.sendRedirect(request.getContextPath()+"/ssm/home");
 	}
+
 %>
 <html>
 <head>
@@ -40,7 +42,6 @@
 		<div class="container">
 			<div class="sin-w3-agile">
 				<h2>Sign In</h2>
-				<%-- <form action="${base }/login" method="post"> --%>
 				<form id="form" action="#" method="post">
 					<div class="username">
 						<span class="username">账号:</span>
@@ -53,11 +54,10 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="rem-for-agile">
-						<input type="checkbox" name="remember" class="remember">记住我<br>
+						<input type="checkbox" name="rememberMe" class="remember" value="true">记住我<br>
 						<!-- <a href="#">忘记密码</a><br> -->
 					</div>
 					<div class="login-w3">
-						<!-- <input type="submit" class="login" value="登陆"> -->
 						<input type="button" class="login" value="登陆" onclick="login()">
 					</div>
 					<div class="clearfix"></div>

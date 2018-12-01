@@ -15,7 +15,9 @@
 	<context:property-placeholder location="classpath*:config/*.properties" />
 	
 	<!-- 包扫描 -->
-	<context:component-scan base-package="com.ssm"></context:component-scan>
+	<context:component-scan base-package="com.ssm">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	
     <!-- 线程池配置 -->
     <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

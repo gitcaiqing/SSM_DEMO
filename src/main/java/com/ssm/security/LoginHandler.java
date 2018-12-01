@@ -18,7 +18,7 @@ public class LoginHandler {
 
 	@RequestMapping("/shirologin")
 	@ResponseBody
-	public ResultModel shirologin(String username, String password) {
+	public ResultModel shirologin(String username, String password, boolean rememberMe) {
 		
 		try {
 			Subject currentUser = SecurityUtils.getSubject();
@@ -26,6 +26,8 @@ public class LoginHandler {
 			if(!currentUser.isAuthenticated()) {
 				//密码进行MD5加密
 				UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, EncryptKit.MD5(password));
+				//是否记住我
+				usernamePasswordToken.setRememberMe(rememberMe);
 				//认证登陆
 				currentUser.login(usernamePasswordToken);
 			}

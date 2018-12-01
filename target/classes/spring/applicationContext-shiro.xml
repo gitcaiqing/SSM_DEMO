@@ -10,16 +10,7 @@
 	default-lazy-init="true">
 	
 	<description>Spring Shiro整合配置文件</description>
-
-	<!--3.配置realm 自定义的Realm-->
-    <!-- 
-    	Shiro 从从Realm获取安全数据（如用户、角色、权限），就是说SecurityManager要验证用户身份，
-    	那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法；
-		也需要从Realm得到用户相应的角色/权限进行验证用户是否能进行操作；
-		可以把Realm看成DataSource ， 即安全数据源 
-	-->
-    <bean id="shiroDbRealm" class="com.ssm.security.ShiroRealm"></bean>
-
+	
     <!--1. 配置securityManager安全管理器 -->
     <!-- 
     	SecurityManager：安全管理器；即所有与安全有关的操作都会与SecurityManager交互；
@@ -27,17 +18,24 @@
      -->
  	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="shiroDbRealm" />
+        <property name="rememberMeManager.cookie.maxAge" value="30"/>
     </bean>
     
     <!--2. 配置 CacheManager. 2.1需要加入 ehcache 的 jar 包及配置文件. -->
     <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"> </bean> 
-
-    
+	
+	<!--3.配置realm 自定义的Realm-->
+    <!-- 
+    	Shiro 从Realm获取安全数据（如用户、角色、权限），就是说SecurityManager要验证用户身份，
+    	那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法；
+		也需要从Realm得到用户相应的角色/权限进行验证用户是否能进行操作；
+		可以把Realm看成DataSource ， 即安全数据源 
+	-->
+    <bean id="shiroDbRealm" class="com.ssm.security.ShiroRealm"></bean>
     
     <!--4.配置lifecycleBeanPostProcessor，可以自动调用spring ioc 容器中的shiro bean 的生命周期方法  -->
     <!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-    
     
     <!--5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. -->     
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
@@ -55,6 +53,11 @@
         <property name="successUrl" value="/WEB-INF/views/home.jsp"/>
         <!-- 没有权限的页面 -->
         <!-- <property name="unauthorizedUrl" value="/unauthorized.jsp"/> -->
+        <property name="filters">
+            <map>
+                <entry key="user" value-ref="sysUserFilter"/>
+            </map>
+        </property>
       	<!--  
         	配置哪些页面需要受保护. 
         	以及访问这些页面需要的权限. 
@@ -69,14 +72,14 @@
             	/static/**= anon
             	/ssm/shirologin/** = anon
             	/ssm/logout = logout
-                <!-- # everything else requires authentication: authc -->
-                /** = authc
+            	/ssm/home = user
+                <!-- 其他的需要授权访问authc -->
+                /* = authc
             </value>
         </property>
     </bean>
 
   	<!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
-    
     <bean
         class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager" />
@@ -86,9 +89,9 @@
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
-                <prop key="org.apache.shiro.authz.UnauthorizedException">/login</prop>
+            	<!-- 无权限跳转到登陆页，可自行定义 -->
+                <prop key="org.apache.shiro.authz.UnauthorizedException">/ssm/home</prop>
             </props>
         </property>
     </bean>
-	
 </beans>
