@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ssm.exception.AccountException;
 import com.ssm.util.EncryptKit;
 import com.ssm.util.ResultModel;
+import com.ssm.util.WebUtils;
 
 @Controller
 @RequestMapping("ssm")
@@ -32,6 +33,7 @@ public class LoginHandler {
 				currentUser.login(usernamePasswordToken);
 			}
 		} catch (AuthenticationException e) {
+			WebUtils.getSession().removeAttribute("currentUser");
 			if(e instanceof AccountException) {
 				return new ResultModel(1, "账号或密码错误");
 			}
@@ -49,6 +51,7 @@ public class LoginHandler {
 			Subject subject = SecurityUtils.getSubject();
 			if(subject.isAuthenticated()) {
 				subject.logout();
+				WebUtils.getSession().removeAttribute("currentUser");
 				//登出成功
 				return "redirect:/login.jsp";
 			}

@@ -1,5 +1,7 @@
 package com.ssm.security;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ssm.entity.BasicUser;
 import com.ssm.exception.AccountException;
 import com.ssm.mapper.BasicUserMapper;
+import com.ssm.util.WebUtils;
 
 public class ShiroRealm extends AuthorizingRealm{
 	
@@ -41,6 +44,8 @@ public class ShiroRealm extends AuthorizingRealm{
 		}
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
 				basicUser.getUsername(), basicUser.getPassword(), basicUser.getRealname());
+		HttpSession session = WebUtils.getSession();
+		session.setAttribute("currentUser", basicUser);
 		return simpleAuthenticationInfo;
 	}
 
