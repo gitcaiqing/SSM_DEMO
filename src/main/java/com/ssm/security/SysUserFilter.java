@@ -11,8 +11,8 @@ public class SysUserFilter extends UserFilter{
 
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-		// TODO Auto-generated method stub
-		return super.isAccessAllowed(request, response, mappedValue);
+		boolean isAccess = super.isAccessAllowed(request, response, mappedValue);
+		return isAccess;
 	}
-
+	
 }
