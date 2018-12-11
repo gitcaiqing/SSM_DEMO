@@ -1,6 +1,9 @@
 package com.ssm.service;
 
+import java.util.List;
+
 import com.ssm.entity.BasicUser;
+import com.ssm.entity.Page;
 
 /**
  * 用户Service
@@ -18,5 +21,7 @@ public interface BasicUserService {
 	Integer updateById(BasicUser basicUser);
 	
 	BasicUser selectByUsername(String username);
+
+	Page<List<BasicUser>> listBasicUser(BasicUser basicUser, Page<BasicUser> page);
 
 }

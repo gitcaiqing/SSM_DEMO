@@ -65,9 +65,9 @@
 				<div class="back">
 					<a href="https://blog.csdn.net/caiqing116" target="_blank">去主人博客</a>
 				</div>
-				<div class="footer">
-					<p>&copy; 2018 Design by <a href="https://blog.csdn.net/caiqing116" target="_blank">https://blog.csdn.net/caiqing116</a></p>
-				</div>
+				<!--copy rights start -->
+					<%@include file="/WEB-INF/common/copyright.jsp" %>
+				<!--copy rights end -->
 			</div>
 		</div>
 	</div>

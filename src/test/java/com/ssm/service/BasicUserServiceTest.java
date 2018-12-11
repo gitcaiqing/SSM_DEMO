@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ssm.datasource.DataSourceContextHolder;
+import com.ssm.datasource.DynamicDataSource;
 import com.ssm.entity.BasicUser;
 import com.ssm.util.EncryptKit;
 import com.ssm.util.UuidUtil;
@@ -24,14 +26,19 @@ public class BasicUserServiceTest {
 	@Test
 	public void testInsert() {
 		BasicUser basicUser = new BasicUser();
-		basicUser.setId(1);
-		basicUser.setUtype(2);
+		basicUser.setUtype(1);
 		basicUser.setUserid(UuidUtil.getUuid());
-		basicUser.setUsername("墨倾池");
-		basicUser.setRealname("墨倾池");
+		basicUser.setUsername("剑非道");
+		basicUser.setRealname("剑非道");
 		basicUser.setPassword(EncryptKit.MD5("123456"));
 		basicUser.setAge(18);
+		//切换到3308插入数据
+		DataSourceContextHolder.clear();
+		DataSourceContextHolder.setDatatype(DataSourceContextHolder.DATASOURCE3308);
+		
 		int result = basicUserService.insert(basicUser);
+		
+		DataSourceContextHolder.clear();
 		log.info("basicUser:"+basicUser);
 		log.info("插入行数："+result);
 	}

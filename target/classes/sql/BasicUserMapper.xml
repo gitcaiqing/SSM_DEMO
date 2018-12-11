@@ -164,4 +164,35 @@
     from tb_basic_user
     where username = #{username,jdbcType=VARCHAR}
   </select>
+  
+  <!-- 统计数据总数 -->
+  <select id="countData" resultType="java.lang.Integer">
+  	select count(*)
+  	from tb_basic_user
+  	where 1 = 1
+  	<if test="basicUser.username != null and basicUser.username != ''">
+  		and username like concat('%',#{basicUser.username,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="basicUser.realname != null and basicUser.realname != ''">
+  		and realname like concat('%',#{basicUser.realname,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+  <!-- 统计所有数据 -->
+  <select id="listData" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from tb_basic_user
+  	where 1 = 1
+  	<if test="basicUser.username != null and basicUser.username != ''">
+  		and username like concat('%',#{basicUser.username,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="basicUser.realname != null and basicUser.realname != ''">
+  		and realname like concat('%',#{basicUser.realname,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="page.sort != null and page.order != null">
+  		order by ${page.sort} ${page.order}
+  	</if>
+  	LIMIT #{page.start},#{page.pageSize}
+	
+  </select>
+  
 </mapper>

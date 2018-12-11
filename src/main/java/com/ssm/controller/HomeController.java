@@ -1,7 +1,11 @@
 package com.ssm.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ssm.entity.BasicUser;
+import com.ssm.util.WebUtils;
 
 /**
  * 主页控制器
@@ -12,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
 	@RequestMapping("/home")
-	public String home() {
-		return "/home";
+	public String home(Model model) {
+		BasicUser basicUser = WebUtils.getCurrentUser();
+		model.addAttribute("basicUser", basicUser);
+		return "/index";
 	}
+
 }

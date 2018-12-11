@@ -16,7 +16,10 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+	<!-- 配置RequestContextListener -->
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
     <!-- Spring MVC servlet -->  
 	<servlet>
 		<servlet-name>springMvc</servlet-name>
@@ -66,9 +69,7 @@
         <filter-name>shiroFilter</filter-name>  
         <url-pattern>/*</url-pattern>  
     </filter-mapping>  
-	
-	
-  
+    
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>

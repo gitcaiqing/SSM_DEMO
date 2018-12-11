@@ -1815,8 +1815,8 @@ code {
 }
 .btn-danger {
     color: #fff;
-    background-color: #fcb216;
-    border-color: #fcb216;
+    background-color: #ff3e07;
+    border-color: #ff3e07;
 }
 .btn-danger:hover, .btn-danger:focus, .btn-danger.focus, .btn-danger:active, .btn-danger.active, .open > .dropdown-toggle.btn-danger {
     color: #fff;
@@ -3960,8 +3960,8 @@ section#tables  p {
 	padding: 15px!important;
 }
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-	font-size: 0.9em;
-	color: #999;
+	font-size: 1.1em;
+	color: #909090;
 	border-top: none !important;
 }
 .tab-content > .active {
@@ -4309,7 +4309,7 @@ canvas#bar,canvas#line,canvas#pie {
     box-shadow: none;
 }
 .btn {
-    border-radius: 0px;
+    border-radius: 5px;
     outline: none;
 }
 .btn-default:active, .btn-default:focus, .btn-default:hover {

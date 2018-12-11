@@ -18,7 +18,9 @@
 	<h2>
 		<input type="button" value="退出" onclick='window.location.href="${base}/ssm/shirologout"'>
 	</h2> 
+	
 	<h2>是否【登陆认证】访问：<%=subject.isAuthenticated() %></h2>
 	<h2>是否【记住我】访问：<%=subject.isRemembered() %></h2>
+	<h2>当前登录用户currentUser:${basicUser.username }</h2>
 </body>
 </html>

@@ -11,7 +11,32 @@
 	
 	<description>Spring Shiro整合配置文件</description>
 	
-    <!--1. 配置securityManager安全管理器 -->
+	<!-- 配置Session管理器，用于实现Session共享 start -->
+	
+	<!-- 自定义实现EnterpriseCacheSessionDAO -->
+	<bean id="customShiroSessionDao" class="com.ssm.security.CustomShiroSessionDao"></bean>
+	
+	<!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->  
+    <bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <!-- cookie的name,对应的默认是 JSESSIONID -->  
+        <constructor-arg name="name" value="SHAREJSESSIONID" />  
+        <!-- jsessionId的path为 / 用于共享jsessionId -->  
+        <property name="path" value="/" />  
+        <!-- cookie中设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息，这样能有效的防止XSS攻击 -->
+        <property name="httpOnly" value="true"/>  
+    </bean> 
+	
+	<!-- session管理器  -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="customShiroSessionDao"></property>
+		<!-- 定时清理失效会话, 清理用户直接关闭浏览器造成的孤立会话 -->
+		<property name="sessionValidationInterval" value="1800000"></property>
+		<property name="sessionIdCookie" ref="sharesession"></property>
+	</bean>
+	<!-- 配置Session管理器，用于实现Session共享 end -->
+	
+	
+    <!--配置securityManager安全管理器 -->
     <!-- 
     	SecurityManager：安全管理器；即所有与安全有关的操作都会与SecurityManager交互；
 		且它管理着所有Subject；可以看出它是Shiro 的核心，它负责与后边介绍的其他组件进行交互
@@ -19,12 +44,13 @@
  	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="shiroDbRealm" />
         <property name="rememberMeManager.cookie.maxAge" value="30"/>
+        <property name="sessionManager" ref="sessionManager"></property>
     </bean>
     
-    <!--2. 配置 CacheManager. 2.1需要加入 ehcache 的 jar 包及配置文件. -->
+    <!--配置 CacheManager. 2.1需要加入 ehcache 的 jar 包及配置文件. -->
     <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"> </bean> 
 	
-	<!--3.配置realm 自定义的Realm-->
+	<!--配置realm 自定义的Realm-->
     <!-- 
     	Shiro 从Realm获取安全数据（如用户、角色、权限），就是说SecurityManager要验证用户身份，
     	那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法；
@@ -33,11 +59,11 @@
 	-->
     <bean id="shiroDbRealm" class="com.ssm.security.ShiroRealm"></bean>
     
-    <!--4.配置lifecycleBeanPostProcessor，可以自动调用spring ioc 容器中的shiro bean 的生命周期方法  -->
+    <!--配置lifecycleBeanPostProcessor，可以自动调用spring ioc 容器中的shiro bean 的生命周期方法  -->
     <!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
     
-    <!--5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. -->     
+    <!--启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. -->     
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           depends-on="lifecycleBeanPostProcessor">
           <property name="proxyTargetClass" value="true" />
@@ -72,9 +98,11 @@
             	/static/**= anon
             	/ssm/shirologin/** = anon
             	/ssm/logout = logout
-            	/ssm/home = user
+            	/login.jsp = anon
+            	<!-- 可以通过remberme访问 -->
+            	ssm/home = user
                 <!-- 其他的需要授权访问authc -->
-                /* = authc
+                /ssm/* = authc
             </value>
         </property>
     </bean>

@@ -11,7 +11,7 @@
 	<description>数据库、事务配置</description>
 	
 	<!-- 数据源-->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+	<bean id="dataSource3306" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
 	
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		
@@ -23,12 +23,48 @@
 		<property name="maxActive" value="${jdbc.maxActive}" />
 		<property name="maxIdle" value="${jdbc.maxIdle}" />
 		<property name="minIdle" value="${jdbc.minIdle}" />
+		<property name="maxWait" value="${jdbc.maxWait}"></property>
 		<property name="validationQuery" value="${jdbc.validationQuery}" />
 		
 		<!-- 监控数据库 -->
 		<!--<property name="filters" value="mergeStat" />-->
 		<property name="filters" value="stat" /> 
 		<property name="connectionProperties" value="druid.stat.mergeSql=true" />  
+	</bean>
+	
+	<!-- 数据源 -->
+	<bean id="dataSource3308" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+	
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		
+		<property name="url" value="${jdbc.3308.url}" />
+		<property name="username" value="${jdbc.3308.username}" />
+		<property name="password" value="${jdbc.3308.password}" />
+		
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<property name="maxWait" value="${jdbc.maxWait}"></property>
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		
+		<!-- 监控数据库 -->
+		<!--<property name="filters" value="mergeStat" />-->
+		<property name="filters" value="stat" /> 
+		<property name="connectionProperties" value="druid.stat.mergeSql=true" />  
+	</bean>
+	
+	<bean id="dataSource" class="com.ssm.datasource.DynamicDataSource">
+		<!-- 设置多个数据源 -->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="dataSource3306" value-ref="dataSource3306"/>
+				<entry key="dataSource3308" value-ref="dataSource3308"/>
+			</map>
+		</property>
+		<!-- 设置默认数据源，默认走主库 -->
+		<property name="defaultTargetDataSource" ref="dataSource3306"></property>
+
 	</bean>
     
 </beans>
