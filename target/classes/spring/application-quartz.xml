@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+		default-lazy-init="true"> 
+		
+	<!-- 密码过期提醒任务调度 -->
+	<bean id="jobPasswordExpired" class="com.ssm.quartz.PasswordExpiredQuartz" /> 
+	<bean id="jobPasswordExpiredDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+	    <property name="targetObject" ref="jobPasswordExpired" />
+	    <property name="targetMethod" value="doTask" /> 
+	    <!-- 是否支持并发 true 支持； false不支持，等上一个调度任务执行完才会执行，如果间隔时间小于任务执行时间第二个调度任务启动但会推迟执行 -->
+	    <property name="concurrent" value="false" /> 
+	 </bean>
+	<bean id="jobPasswordExpiredTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="jobPasswordExpiredDetail" />  
+        <!-- 每隔30秒执行一次：0 */30 * * * ? -->
+        <property name="cronExpression" value="*/30 * * * * ?"/>
+	</bean>
+	
+	<!--  总管理类如果将lazy-init='false'那么容器启动就会执行调度程序   -->  
+	<bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="true" >  
+        <property name="triggers"> 
+            <!-- 作业调度器,list下可加入其他的调度器 -->
+            <list>  
+             	<!-- <ref bean="jobPasswordExpiredTrigger" /> -->
+            </list>
+	    </property>
+	</bean>
+	
+</beans>
+<!-- 
+每隔5秒执行一次：*/5 * * * * ?
+每隔1分钟执行一次：0 */1 * * * ?
+每天23点执行一次：0 0 23 * * ?
+每天凌晨1点执行一次：0 0 1 * * ?
+每月1号凌晨1点执行一次：0 0 1 1 * ?
+每月最后一天23点执行一次：0 0 23 L * ?
+每周星期天凌晨1点实行一次：0 0 1 ? * L
+ 在26分、29分、33分执行一次：0 26,29,33 * * * ?
+每天的0点、13点、18点、21点都执行一次：0 0 0,13,18,21 * * ?	
+-->
+
+

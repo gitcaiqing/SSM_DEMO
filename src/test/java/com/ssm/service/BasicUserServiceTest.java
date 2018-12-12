@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ssm.datasource.DataSourceContextHolder;
-import com.ssm.datasource.DynamicDataSource;
 import com.ssm.entity.BasicUser;
 import com.ssm.util.EncryptKit;
 import com.ssm.util.UuidUtil;
@@ -34,7 +33,7 @@ public class BasicUserServiceTest {
 		basicUser.setAge(18);
 		//切换到3308插入数据
 		DataSourceContextHolder.clear();
-		DataSourceContextHolder.setDatatype(DataSourceContextHolder.DATASOURCE3308);
+		DataSourceContextHolder.mark3306();
 		
 		int result = basicUserService.insert(basicUser);
 		
