@@ -14,7 +14,7 @@
 	<!-- 配置Session管理器，用于实现Session共享 start -->
 	
 	<!-- 自定义实现EnterpriseCacheSessionDAO -->
-	<bean id="customShiroSessionDao" class="com.ssm.security.CustomShiroSessionDao"></bean>
+	<!-- <bean id="customShiroSessionDao" class="com.ssm.security.CustomShiroSessionDao"></bean> -->
 	
 	<!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->  
     <bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">  
@@ -28,7 +28,7 @@
 	
 	<!-- session管理器  -->
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-		<property name="sessionDAO" ref="customShiroSessionDao"></property>
+		<!-- <property name="sessionDAO" ref="customShiroSessionDao"></property> -->
 		<!-- 定时清理失效会话, 清理用户直接关闭浏览器造成的孤立会话 -->
 		<property name="sessionValidationInterval" value="1800000"></property>
 		<property name="sessionIdCookie" ref="sharesession"></property>
