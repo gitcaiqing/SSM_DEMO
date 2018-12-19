@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 	<description>数据库、事务配置</description>
 	
-	<!-- 端口号3306的数据源-->
+	<!-- 端口号3306的数据源(主)-->
 	<bean id="dataSource3306" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
@@ -28,7 +28,7 @@
 		<property name="connectionProperties" value="druid.stat.mergeSql=true" />  
 	</bean>
 	
-	<!-- 端口号3308的数据源 -->
+	<!-- 端口号3308的数据源(从) -->
 	<bean id="dataSource3308" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.3308.url}" />
@@ -55,6 +55,21 @@
 			<map key-type="java.lang.String">
 				<entry key="dataSource3306" value-ref="dataSource3306"/>
 				<entry key="dataSource3308" value-ref="dataSource3308"/>
+			</map>
+		</property>
+		<property name="methodPrefix">
+			<map key-type="java.lang.String">
+				<entry key="slave">
+					<!-- "list","count","find","get","select","query" 等，根据开发人员方法命名习惯配置 -->
+					<list>
+						<value>list</value>
+						<value>count</value>
+						<value>find</value>
+						<value>get</value>
+						<value>select</value>
+						<value>query</value>
+					</list>
+				</entry>
 			</map>
 		</property>
 	</bean>

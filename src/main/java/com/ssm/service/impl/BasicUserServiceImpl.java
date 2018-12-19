@@ -4,9 +4,13 @@ package com.ssm.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.druid.support.logging.Log;
 import com.ssm.entity.BasicUser;
 import com.ssm.entity.Page;
 import com.ssm.mapper.BasicUserMapper;
@@ -19,6 +23,8 @@ import com.ssm.service.BasicUserService;
  */
 @Service
 public class BasicUserServiceImpl implements BasicUserService{
+	
+	private static final Logger log = LoggerFactory.getLogger(BasicUserServiceImpl.class);
 
 	@Autowired
 	private BasicUserMapper basicUserMapper;
@@ -34,13 +40,27 @@ public class BasicUserServiceImpl implements BasicUserService{
 	 * 根据id删除
 	 */
 	public Integer deleteById(Integer id) {
-		return basicUserMapper.deleteByPrimaryKey(id);
+		log.info("进入方法deleteById.....");
+		//return basicUserMapper.deleteByPrimaryKey(id);
+		basicUserMapper.selectByPrimaryKey(id);
+		return 0;
 	}
 
 	/**
 	 * 根据id查询
 	 */
 	public BasicUser selectById(Integer id) {
+		//该方法内部含有一些其他业务处理，如插入删除更新操作等等需要，需要切换到主节点
+		//在这里进行了Service层内部方法调用
+		//一般理解，这里会切换到从库，实际是不会的
+		log.info("执行删除操作开始");
+		//this.deleteById(3);
+		
+		//既然只有调用代理类的方法才能切入，那我们拿到代理类
+		BasicUserService proxy = ((BasicUserService)AopContext.currentProxy());
+		proxy.deleteById(3);
+		log.info("执行删除操作结束");
+		
 		return basicUserMapper.selectByPrimaryKey(id);
 	}
 
