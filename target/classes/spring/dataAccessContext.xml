@@ -74,4 +74,11 @@
 		</property>
 	</bean>
     
+    <!-- 使用annotation定义事务，使用cglib代理，解决同一service中事务方法相互调用的 嵌套事务失效问题 -->
+	<tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="true"/>
+	<!--事务配置 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
 </beans>
