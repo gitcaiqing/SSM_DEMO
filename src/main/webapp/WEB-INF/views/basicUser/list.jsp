@@ -123,7 +123,7 @@ function initTable(){
         idField: "id",//指定主键列
         columns: [
         	//表的列名,json数据中rows数组中的属性名,水平居中
-        	{title: '序号',align: 'center',width: "10%",
+        	{title: '序号',align: 'center',
         		formatter: function (value, row, index) {
                     //var options = $table.bootstrapTable('getOptions');
                     //return options.pageSize * (options.pageNumber - 1) + index + 1;
@@ -133,16 +133,16 @@ function initTable(){
         			css:{"background-color":"red"}
         		} */
         	},
-            {title: '用户名',field: 'username',align: 'center',width: "15%"},
-            {title: '真实姓名',field: 'realname',align: 'center',width: "15%"},
-            {title: '年龄',field: 'age',align: 'center',width: "15%"},
-            {title: '用户类型',field: 'utype', align: 'center',width: "15%",
+            {title: '用户名',field: 'username',align: 'center'},
+            {title: '真实姓名',field: 'realname',align: 'center'},
+            {title: '年龄',field: 'age',align: 'center',},
+            {title: '用户类型',field: 'utype', align: 'center',
                 formatter: function (value, row, index) {
                 	//自定义显示，这三个参数分别是：value该行的属性，row该行记录，index该行下标
                     return row.utype == 0 ? "管理员" : "普通用户";
                 }
             },
-            {title: '操作',field: 'id',align: 'center',width: "30%",
+            {title: '操作',field: 'id',align: 'center',
                 formatter: function (value, row, index) {
                     return [
                         '<button type="button" onclick="onDetail(\''+row.id+'\')" class="btn btn-info" style="margin-right:10px;"><span class="fa fa-eye" aria-hidden="true" class="btn-icon-space"></span> 详细</button>',
