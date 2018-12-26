@@ -41,9 +41,9 @@ public class BasicUserServiceImpl implements BasicUserService{
 	 */
 	public Integer deleteById(Integer id) {
 		log.info("进入方法deleteById.....");
-		//return basicUserMapper.deleteByPrimaryKey(id);
-		basicUserMapper.selectByPrimaryKey(id);
-		return 0;
+		return basicUserMapper.deleteByPrimaryKey(id);
+		//basicUserMapper.selectByPrimaryKey(id);
+		//return 0;
 	}
 
 	/**
@@ -53,13 +53,13 @@ public class BasicUserServiceImpl implements BasicUserService{
 		//该方法内部含有一些其他业务处理，如插入删除更新操作等等需要，需要切换到主节点
 		//在这里进行了Service层内部方法调用
 		//一般理解，这里会切换到从库，实际是不会的
-		log.info("执行删除操作开始");
+		//log.info("执行删除操作开始");
 		//this.deleteById(3);
 		
 		//既然只有调用代理类的方法才能切入，那我们拿到代理类
-		BasicUserService proxy = ((BasicUserService)AopContext.currentProxy());
-		proxy.deleteById(3);
-		log.info("执行删除操作结束");
+		//BasicUserService proxy = ((BasicUserService)AopContext.currentProxy());
+		//proxy.deleteById(3);
+		//log.info("执行删除操作结束");
 		
 		return basicUserMapper.selectByPrimaryKey(id);
 	}

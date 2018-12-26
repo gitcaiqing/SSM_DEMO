@@ -3,13 +3,16 @@ package com.ssm.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssm.entity.BasicUser;
 import com.ssm.entity.Page;
 import com.ssm.service.BasicUserService;
+import com.ssm.util.EncryptKit;
 import com.ssm.util.ResultModel;
 
 /**
@@ -38,6 +41,7 @@ public class BasicUserController {
 	@RequestMapping(value="/user", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultModel insertBasicUser(BasicUser basicUser) {
+		basicUser.setPassword(EncryptKit.MD5(basicUser.getPassword()));
 		int row = basicUserService.insert(basicUser);
 		if(row > 0) {
 			return new ResultModel(201, row, "新增成功");
@@ -81,7 +85,7 @@ public class BasicUserController {
 	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public Object updateById(@PathVariable("id")Integer id, String realname) {
+	public Object updateById(@PathVariable("id")Integer id, @RequestBody String realname) {
 		BasicUser basicUser = new BasicUser();
 		basicUser.setId(id);
 		basicUser.setRealname(realname);
