@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ssm.entity.BasicUser;
 import com.ssm.entity.Page;
 import com.ssm.service.BasicUserService;
-import com.ssm.util.FinalData;
 import com.ssm.util.ResultModel;
 
 /**
@@ -41,9 +40,9 @@ public class BasicUserController {
 	public ResultModel insertBasicUser(BasicUser basicUser) {
 		int row = basicUserService.insert(basicUser);
 		if(row > 0) {
-			return new ResultModel(FinalData.SUCCESS, row, "新增成功");
+			return new ResultModel(201, row, "新增成功");
 		}
-		return new ResultModel(1, row, "新增失败");
+		return new ResultModel(200, row, "新增失败");
 	}
 	
 	/**
@@ -56,9 +55,9 @@ public class BasicUserController {
 	public ResultModel deleteById(@PathVariable("id")Integer id) {
 		int row = basicUserService.deleteById(id);
 		if(row > 0) {
-			return new ResultModel(0, row, "新增成功");
+			return new ResultModel(201, row, "删除成功");
 		}
-		return new ResultModel(1, row, "新增失败");
+		return new ResultModel(404, row, "删除失败");
 	}
 	
 	/**
@@ -70,7 +69,7 @@ public class BasicUserController {
 	@ResponseBody
 	public ResultModel selectById(@PathVariable("id")Integer id) {
 		BasicUser basicUser = basicUserService.selectById(id);
-		return new ResultModel(0, basicUser, "获取成功");
+		return new ResultModel(200, basicUser, "获取成功");
 	}
 	
 	
@@ -86,7 +85,11 @@ public class BasicUserController {
 		BasicUser basicUser = new BasicUser();
 		basicUser.setId(id);
 		basicUser.setRealname(realname);
-		return basicUserService.updateById(basicUser);
+		int row =  basicUserService.updateById(basicUser);
+		if(row > 0) {
+			return new ResultModel(201, row, "更新成功");
+		}
+		return new ResultModel(200, row, "更新失败");
 	}
 	
 	@RequestMapping("/listPage")
