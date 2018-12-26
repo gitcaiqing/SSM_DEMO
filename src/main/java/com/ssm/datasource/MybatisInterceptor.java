@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
 public class MybatisInterceptor implements Interceptor {
 	
 	private static final Logger log = LoggerFactory.getLogger(MybatisInterceptor.class);
+	
+	@SuppressWarnings("unused")  
+    private Properties properties;  
 
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
@@ -42,11 +45,12 @@ public class MybatisInterceptor implements Interceptor {
 
         BoundSql boundSql = mappedStatement.getBoundSql(parameter);  
         Configuration configuration = mappedStatement.getConfiguration();  
+        Object returnVal = invocation.proceed();
        
         //获取sql语句
         String sql = getSql(configuration, boundSql);  
         log.info("Mybatis 拦截器获取SQL:{}",sql);
-        return sql;
+        return returnVal;
 	}
 
 	@Override
@@ -55,10 +59,16 @@ public class MybatisInterceptor implements Interceptor {
 	}
 
 	@Override
-	public void setProperties(Properties arg0) {
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 	
-	@SuppressWarnings("null")
+	/**
+	 * 获取SQL
+	 * @param configuration
+	 * @param boundSql
+	 * @return
+	 */
 	private String getSql(Configuration configuration, BoundSql boundSql) {
 		Object parameterObject = boundSql.getParameterObject();  
 	    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();  
