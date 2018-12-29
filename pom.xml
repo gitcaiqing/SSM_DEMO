@@ -289,6 +289,25 @@
 		  	<artifactId>quartz</artifactId>
 		  	<version>2.2.1</version>
 	    </dependency>
+	    
+	    <!-- swagger1 -->  
+		<!-- <dependency>    
+		    <groupId>com.mangofactory</groupId>    
+		    <artifactId>swagger-springmvc</artifactId>    
+		    <version>1.0.2</version>    
+		</dependency> -->
+		
+		<!-- swagger2 -->  
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.4.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.4.0</version>
+		</dependency>
 		
   </dependencies>
   <build>

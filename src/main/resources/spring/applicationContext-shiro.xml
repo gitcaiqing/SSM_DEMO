@@ -100,7 +100,7 @@
             	/ssm/logout = logout
             	/login.jsp = anon
             	<!-- 可以通过remberme访问 -->
-            	ssm/home = user
+            	/ssm/home = user
                 <!-- 其他的需要授权访问authc -->
                 /ssm/* = authc
             </value>

@@ -32,9 +32,12 @@
             </bean>			
   		</mvc:message-converters>
 	</mvc:annotation-driven>
-	
+
 	<!-- 静态资源 -->
 	<mvc:resources mapping="/static/**" location="/static/" />
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+	
 	
 	<!-- 试图解析后台 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
